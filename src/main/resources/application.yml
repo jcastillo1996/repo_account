@@ -1,0 +1,34 @@
+info:
+  name: @project.name@
+  version: @project.version@
+management:
+  endpoints:
+    web:
+      base-path: /application
+      exposure:
+        include: "*"
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  security:
+    enabled: false
+  health:
+    diskspace:
+      threshold: 5368709120
+    redis:
+      enabled: false
+spring:
+  data:
+    mongodb:
+      database: db_accounts
+      uri: mongodb://localhost:27017
+      repositories:
+        type: auto
+
+
