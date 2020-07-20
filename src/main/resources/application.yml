@@ -26,8 +26,8 @@ management:
 spring:
   data:
     mongodb:
-      database: db_accounts
-      uri: mongodb://localhost:27017
+      database: bdaccounts
+      uri: mongodb+srv://user_mongo:G1TFNZUPitWXoy8z@cluster0.7dn2n.mongodb.net/bdaccounts?retryWrites=true&w=majority
       repositories:
         type: auto
 
