@@ -30,5 +30,7 @@ spring:
       uri: mongodb+srv://user_mongo:G1TFNZUPitWXoy8z@cluster0.7dn2n.mongodb.net/bdaccounts?retryWrites=true&w=majority
       repositories:
         type: auto
-
+springdoc:
+  swagger-ui:
+    path: /swagger-ui-custom.html
 
