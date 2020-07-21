@@ -54,7 +54,7 @@ class AccountControllerTest {
 		acc.money="S";
 		acc.accountType="D";
 		acc.creationDate=LocalDate.now();
-		acc.balance=54893.90;
+		acc.mount=54893.90;
 		acc.idClient=8L;
 		Mono<Account> accMono = Mono.just(acc);
 		when(service.save(acc)).thenReturn(accMono);
@@ -70,7 +70,7 @@ class AccountControllerTest {
 		acc.money="S";
 		acc.accountType="D";
 		acc.creationDate=LocalDate.now();
-		acc.balance=54893.90;
+		acc.mount=54893.90;
 		acc.idClient=8L;
 		Mono<Account> accMono = Mono.just(acc);
 		when(service.update(acc)).thenReturn(accMono);
