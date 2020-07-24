@@ -50,4 +50,10 @@ public class AccountServiceImpl implements IAccountService {
 		return repo.deleteAll();
 	}
 
+	@Override
+	public Mono<Account> findByIdClient(Long id) {
+		
+		return repo.findByIdClient(id);
+	}
+
 }

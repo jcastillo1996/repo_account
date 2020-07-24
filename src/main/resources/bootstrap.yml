@@ -1,6 +1,6 @@
 spring:
   application:
-    name: account-micro 
+    name: account-micro
   cloud:
     config:
       uri: http://localhost:8085
