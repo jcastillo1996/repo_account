@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.demo.model.Account;
 import com.example.demo.service.impl.AccountServiceImpl;
@@ -35,9 +36,8 @@ public class AccountController {
 	}
 
 	@GetMapping("/{id}")
-	public Mono<ResponseEntity<Account>> findById(@PathVariable(name = "id") Long id) {
-		return service.findById(id).map(account -> new ResponseEntity<>(account, HttpStatus.OK))
-				.defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+	public Mono<Account> findById(@PathVariable(name = "id") Long id) {
+		return service.findById(id).switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND,"ACCOUNT NOT FOUND ID: "+id)));
 	}
 
 	@PostMapping

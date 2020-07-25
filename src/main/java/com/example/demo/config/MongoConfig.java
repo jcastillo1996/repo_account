@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.ReactiveMongoTransactionManager;
 import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration;
 //import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
+import org.springframework.http.codec.ServerCodecConfigurer;
 
 import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoClients;
@@ -43,4 +44,8 @@ public class MongoConfig extends AbstractReactiveMongoConfiguration {
 		return new ReactiveMongoTemplate(reactiveMongoClient(), getDatabaseName());
 	}
 	*/
+	@Bean
+	public ServerCodecConfigurer serverCodecConfigurer() {
+	   return ServerCodecConfigurer.create();
+	}
 }
