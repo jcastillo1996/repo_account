@@ -3,59 +3,53 @@ package com.example.demo.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.model.Account;
-import com.example.demo.repo.AccountRepo;
-import com.example.demo.service.AccountService;
+import com.example.demo.model.AccountType;
+import com.example.demo.repo.AccountTypeRepo;
+import com.example.demo.service.AccountTypeService;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-public class AccountServiceImpl implements AccountService {
+public class AccountTypeServiceImpl implements AccountTypeService {
 
 	@Autowired
-	AccountRepo repo;
-	
-	
+	AccountTypeRepo repo;
 	
 	@Override
-	public Mono<Account> save(Account obj) {
+	public Mono<AccountType> save(AccountType obj) {
+		
 		return repo.insert(obj);
 	}
 
 	@Override
-	public Mono<Account> update(Account obj) {
+	public Mono<AccountType> update(AccountType obj) {
+		
 		return repo.save(obj);
 	}
 
 	@Override
-	public Flux<Account> findAll() {
-
+	public Flux<AccountType> findAll() {
+		
 		return repo.findAll();
 	}
 
 	@Override
-	public Mono<Account> findById(Long v) {
-
+	public Mono<AccountType> findById(Long v) {
+		
 		return repo.findById(v);
 	}
 
 	@Override
 	public Mono<Void> deleteById(Long v) {
-
+		
 		return repo.deleteById(v);
 	}
 
 	@Override
 	public Mono<Void> deleteAll() {
-
-		return repo.deleteAll();
-	}
-
-	@Override
-	public Flux<Account> findByIdClient(Long id) {
 		
-		return repo.findByIdClient(id);
+		return repo.deleteAll();
 	}
 
 }

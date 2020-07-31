@@ -2,6 +2,7 @@ package com.example.demo.config;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,7 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 //import org.springframework.http.codec.ServerCodecConfigurer;
 
 @Configuration
@@ -23,10 +25,9 @@ public class ServiceConfigurationProperties {
 		return new ReactiveStringRedisTemplate(factory);
 	}
 
+
 	/*
-	@Bean
-	public ServerCodecConfigurer serverCodecConfigurer() {
-	   return ServerCodecConfigurer.create();
-	}
-	*/
+	 * @Bean public ServerCodecConfigurer serverCodecConfigurer() { return
+	 * ServerCodecConfigurer.create(); }
+	 */
 }

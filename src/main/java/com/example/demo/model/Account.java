@@ -21,7 +21,7 @@ public class Account {
 	public Long idAccount;
 	public String accountNumber;
 	public String money;
-	public String accountType;
+	public AccountType accountType;
 	public  LocalDate creationDate;
 	public Double mount;
 	public Long idClient;

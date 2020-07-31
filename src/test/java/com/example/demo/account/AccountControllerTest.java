@@ -19,6 +19,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import com.example.demo.controller.AccountController;
 import com.example.demo.model.Account;
+import com.example.demo.model.AccountType;
 import com.example.demo.service.impl.AccountServiceImpl;
 
 import reactor.core.publisher.Mono;
@@ -52,7 +53,7 @@ class AccountControllerTest {
 		acc.idAccount=id;
 		acc.accountNumber="9728357482294";
 		acc.money="S";
-		acc.accountType="D";
+		acc.accountType=new AccountType(1L, "AHORRO");
 		acc.creationDate=LocalDate.now();
 		acc.mount=54893.90;
 		acc.idClient=8L;
@@ -68,7 +69,7 @@ class AccountControllerTest {
 		acc.idAccount=id;
 		acc.accountNumber="9728357482294";
 		acc.money="S";
-		acc.accountType="D";
+		acc.accountType=new AccountType(1L, "AHORRO");
 		acc.creationDate=LocalDate.now();
 		acc.mount=54893.90;
 		acc.idClient=8L;

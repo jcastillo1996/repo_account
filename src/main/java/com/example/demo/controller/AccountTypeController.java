@@ -1,7 +1,5 @@
 package com.example.demo.controller;
 
-import java.time.LocalDate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,41 +13,41 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.example.demo.model.Account;
-import com.example.demo.service.impl.AccountServiceImpl;
+import com.example.demo.model.AccountType;
+import com.example.demo.service.impl.AccountTypeServiceImpl;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/api_account")
-public class AccountController {
-	
+@RequestMapping("/api_account_type")
+public class AccountTypeController {
+
 	@Autowired
-	AccountServiceImpl service;
-	
+	AccountTypeServiceImpl service;
+
 	@GetMapping
-	public Flux<Account> findAll() {
+	public Flux<AccountType> findAll() {
 		return service.findAll();
 	}
 
 	@GetMapping("/{id}")
-	public Mono<Account> findById(@PathVariable(name = "id") Long id) {
-		return service.findById(id).switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND,"ACCOUNT NOT FOUND ID: "+id)));
+	public Mono<AccountType> findById(@PathVariable(name = "id") Long id) {
+		return service.findById(id).switchIfEmpty(
+				Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "ACCOUNT TYPE NOT FOUND ID: " + id)));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Mono<Account> save(@RequestBody  Account account) {
-		service.findByIdClient(account.idClient);
-		
-		 return service.save(account);
+	public Mono<AccountType> save(@RequestBody AccountType accounttype) {
+
+		return service.save(accounttype);
 	}
 
 	@PutMapping
-	public Mono<Account> update(@RequestBody(required = true) Account account) {
-		account.creationDate=LocalDate.now();
-		return service.update(account);
+	public Mono<AccountType> update(@RequestBody(required = true) AccountType accounttype) {
+
+		return service.update(accounttype);
 	}
 
 	@DeleteMapping("/{id}")
@@ -64,5 +62,4 @@ public class AccountController {
 		return service.deleteAll();
 	}
 
-	
 }

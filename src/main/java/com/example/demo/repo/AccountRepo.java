@@ -4,10 +4,10 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
 import com.example.demo.model.Account;
 
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
 
-public interface IAccountRepo extends ReactiveMongoRepository<Account, Long> {
+public interface AccountRepo extends ReactiveMongoRepository<Account, Long> {
 
-	Mono<Account> findByIdClient(Long id);
+	Flux<Account> findByIdClient(Long id);
 	
 }
