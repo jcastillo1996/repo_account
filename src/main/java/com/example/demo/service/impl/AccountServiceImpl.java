@@ -16,8 +16,6 @@ public class AccountServiceImpl implements AccountService {
 	@Autowired
 	AccountRepo repo;
 	
-	
-	
 	@Override
 	public Mono<Account> save(Account obj) {
 		return repo.insert(obj);
@@ -56,6 +54,12 @@ public class AccountServiceImpl implements AccountService {
 	public Flux<Account> findByIdClient(Long id) {
 		
 		return repo.findByIdClient(id);
+	}
+
+	@Override
+	public Mono<Account> findByIdClientAndAccountType(Account account) {
+		
+		return repo.findByIdClientAndAccountType(account.idClient,account.accountType);
 	}
 
 }

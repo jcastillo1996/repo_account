@@ -1,7 +1,5 @@
 package com.example.demo.controller;
 
-import java.time.LocalDate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,10 +22,10 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api_account")
 public class AccountController {
-	
+
 	@Autowired
 	AccountServiceImpl service;
-	
+
 	@GetMapping
 	public Flux<Account> findAll() {
 		return service.findAll();
@@ -35,21 +33,32 @@ public class AccountController {
 
 	@GetMapping("/{id}")
 	public Mono<Account> findById(@PathVariable(name = "id") Long id) {
-		return service.findById(id).switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND,"ACCOUNT NOT FOUND ID: "+id)));
+		return service.findById(id).switchIfEmpty(
+				Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "ACCOUNT NOT FOUND ID: " + id)));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Mono<Account> save(@RequestBody  Account account) {
-		service.findByIdClient(account.idClient);
-		
-		 return service.save(account);
+	public Mono<?> save(@RequestBody Account account) {
+		return service.findByIdClientAndAccountType(account).flatMap(acc -> {
+			return Mono.empty().switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST,
+					"CUSTOMER WITH ID " + acc.idClient + " HAS A REGISTERED ACCOUNT OF THE SAME TYPE")));
+		}).switchIfEmpty(Mono.defer(() -> service.save(account)));
 	}
 
 	@PutMapping
-	public Mono<Account> update(@RequestBody(required = true) Account account) {
-		account.creationDate=LocalDate.now();
-		return service.update(account);
+	public Mono<?> update(@RequestBody(required = true) Account account) {
+		return service.findById(account.idAccount).flatMap(acc -> {
+			if (acc.accountType.equals(account.accountType)) {
+				return service.update(account);
+			} else {
+				return service.findByIdClientAndAccountType(account).flatMap(accc -> {
+					return Mono.empty().switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST,
+							"CUSTOMER WITH ID " + acc.idClient + " HAS A REGISTERED ACCOUNT OF THE SAME TYPE")));
+				}).switchIfEmpty(Mono.defer(() -> service.save(account)));
+			}
+		}).switchIfEmpty(Mono.error(
+				new ResponseStatusException(HttpStatus.NOT_FOUND, "ACCOUNT NOT FOUND ID: " + account.idAccount)));
 	}
 
 	@DeleteMapping("/{id}")
@@ -64,5 +73,4 @@ public class AccountController {
 		return service.deleteAll();
 	}
 
-	
 }

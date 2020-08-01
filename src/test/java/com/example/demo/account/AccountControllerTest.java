@@ -1,7 +1,6 @@
 package com.example.demo.account;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
@@ -50,10 +49,14 @@ class AccountControllerTest {
 	void save() {
 		Long id = 9L;
 		Account acc= new Account();
+		AccountType type=new  AccountType();
+		type.idTypeAccount=1L;
+		type.typeAccount="AHORRO";
+		
 		acc.idAccount=id;
 		acc.accountNumber="9728357482294";
 		acc.money="S";
-		acc.accountType=new AccountType(1L, "AHORRO");
+		acc.accountType=type;
 		acc.creationDate=LocalDate.now();
 		acc.mount=54893.90;
 		acc.idClient=8L;
@@ -66,10 +69,14 @@ class AccountControllerTest {
 	void update() {
 		Long id = 9L;
 		Account acc= new Account();
+		AccountType type=new  AccountType();
+		type.idTypeAccount=1L;
+		type.typeAccount="AHORRO";
+		
 		acc.idAccount=id;
 		acc.accountNumber="9728357482294";
 		acc.money="S";
-		acc.accountType=new AccountType(1L, "AHORRO");
+		acc.accountType=type;
 		acc.creationDate=LocalDate.now();
 		acc.mount=54893.90;
 		acc.idClient=8L;
