@@ -1,6 +1,10 @@
 package com.example.demo.model;
 
 import java.time.LocalDate;
+import java.util.List;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,12 +25,15 @@ import lombok.ToString;
 public class Account {
 	@Id
 	public Long idAccount;
+	@NotNull(message = "NO DEBE SER NULO")
+	@NotEmpty(message = "NO DEBE ESTAR VACIO")
 	public String accountNumber;
 	public String money;
 	public AccountType accountType;
 	public  LocalDate creationDate;
 	public Double mount;
-	public Long idClient;
+	public List<Long> idClient;
+	public List<Long> idSignatory;
 	
 
 }

@@ -1,8 +1,12 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,12 +35,8 @@ public class AccountController {
 	@Autowired
 	ClientRestClient webClient;
 
-	@Value("${wclient.urls.typeclient}")
-	private String clientType;
-
 	@GetMapping
 	public Flux<Account> findAll() {
-		System.out.println(clientType);
 		return service.findAll();
 	}
 
@@ -48,20 +48,25 @@ public class AccountController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Mono<?> save(@RequestBody Account account) {
-		return webClient.getClientById(account.idClient).flatMap(dto -> {
-			if (dto.typeClient.typeName.equals(clientType)) {// Cliente Personal
-				return service.findByIdClientAndAccountType(account).flatMap(acc -> {
-					return Mono.empty().switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST,
-							"CUSTOMER WITH ID " + acc.idClient + " HAS A REGISTERED ACCOUNT OF THE SAME TYPE")));
-				}).switchIfEmpty(Mono.defer(() -> service.save(account)));
+	public Mono<?> save(@Valid @RequestBody Account account) {
+		
+		return webClient.getClientById(account.idClient.get(0)).flatMap(dto -> {
+			
+			if (dto.typeClient.typeName.equals("PERSONAL")) {// Cliente Personal
+				
+				return service.findByIdClientAndAccountType(account)
+						.flatMap(acc -> {
+							return Mono.empty()
+									.switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST,"CUSTOMER WITH ID " + acc.idClient + " HAS A REGISTERED ACCOUNT OF THE SAME TYPE")));
+						})
+						.switchIfEmpty(Mono.defer(() -> service.save(account)));
 			} else {
-				// Cliente Empresarial
-				if (account.accountType.typeAccount.equals("AHORRO")
-						|| account.accountType.typeAccount.equals("PLAZO FIJO")) {
+				// Cliente EMPRESARIAL
+				String accountType=account.accountType.typeAccount;
+				if (accountType.equals("AHORRO")|| accountType.equals("PLAZO FIJO")) {
+					
 					return Mono.empty()
-							.switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST,
-									 "EMPRESARIAL CUSTOMER, MUST NOT HAVE A " + account.accountType.typeAccount + " ACCOUNT")));
+							.switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST,"EMPRESARIAL CUSTOMER, MUST NOT HAVE A " + account.accountType.typeAccount + " ACCOUNT")));
 				} else {
 					return service.save(account);
 				}
@@ -69,17 +74,21 @@ public class AccountController {
 		});
 
 	}
-
 	@PutMapping
 	public Mono<?> update(@RequestBody(required = true) Account account) {
-		return service.findById(account.idAccount).flatMap(acc -> {
-			if (acc.accountType.equals(account.accountType)) {
-				return service.update(account);
-			} else {
-				return service.findByIdClientAndAccountType(account).flatMap(accc -> {
-					return Mono.empty().switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST,
-							"CUSTOMER WITH ID " + acc.idClient + " HAS A REGISTERED ACCOUNT OF THE SAME TYPE")));
-				}).switchIfEmpty(Mono.defer(() -> service.save(account)));
+				System.out.println(account.idClient+ " "+ account.idAccount);
+		return service.findById(account.idAccount)//SI CLIENTE EXISTE
+				.flatMap(acc -> {
+					
+						if (acc.accountType.equals(account.accountType)) {
+							
+							return service.update(account);
+							
+							} else {
+							return service.findByIdClientAndAccountType(account)
+									.flatMap(accc -> {
+										return Mono.empty().switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST,"CUSTOMER WITH ID " + acc.idClient + " HAS A REGISTERED ACCOUNT OF THE SAME TYPE")));
+				}).switchIfEmpty(Mono.defer(() -> service.update(account)));
 			}
 		}).switchIfEmpty(Mono.error(
 				new ResponseStatusException(HttpStatus.NOT_FOUND, "ACCOUNT NOT FOUND ID: " + account.idAccount)));
@@ -95,6 +104,10 @@ public class AccountController {
 	public Mono<Void> deleteAll() {
 
 		return service.deleteAll();
+	}
+	@PostMapping("/findByList")
+	public Flux<Account> listarPorID(@RequestBody List<Long> ids){
+		return service.findByIdClient(ids).switchIfEmpty(Mono.just(new Account()));
 	}
 
 }

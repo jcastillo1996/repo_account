@@ -1,5 +1,7 @@
 package com.example.demo.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +53,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public Flux<Account> findByIdClient(Long id) {
+	public Flux<Account> findByIdClient(List<Long> id) {
 		
 		return repo.findByIdClient(id);
 	}
@@ -62,4 +64,6 @@ public class AccountServiceImpl implements AccountService {
 		return repo.findByIdClientAndAccountType(account.idClient,account.accountType);
 	}
 
+	
+	
 }

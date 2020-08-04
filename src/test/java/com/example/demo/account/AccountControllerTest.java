@@ -4,6 +4,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,6 +49,8 @@ class AccountControllerTest {
 	}
 	@Test
 	void save() {
+		List<Long> idClient=new ArrayList<>();
+		idClient.add(8L);
 		Long id = 9L;
 		Account acc= new Account();
 		AccountType type=new  AccountType();
@@ -59,7 +63,7 @@ class AccountControllerTest {
 		acc.accountType=type;
 		acc.creationDate=LocalDate.now();
 		acc.mount=54893.90;
-		acc.idClient=8L;
+		acc.idClient=idClient;
 		Mono<Account> accMono = Mono.just(acc);
 		when(service.save(acc)).thenReturn(accMono);
 		webClient.post().uri("/api_account").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
@@ -67,6 +71,8 @@ class AccountControllerTest {
 	}
 	@Test
 	void update() {
+		List<Long> idClient=new ArrayList<>();
+		idClient.add(8L);
 		Long id = 9L;
 		Account acc= new Account();
 		AccountType type=new  AccountType();
@@ -79,7 +85,7 @@ class AccountControllerTest {
 		acc.accountType=type;
 		acc.creationDate=LocalDate.now();
 		acc.mount=54893.90;
-		acc.idClient=8L;
+		acc.idClient=idClient;
 		Mono<Account> accMono = Mono.just(acc);
 		when(service.update(acc)).thenReturn(accMono);
 		webClient.put().uri("/api_account").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
