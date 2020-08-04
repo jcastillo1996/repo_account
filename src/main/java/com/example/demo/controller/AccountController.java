@@ -76,17 +76,17 @@ public class AccountController {
 	}
 	@PutMapping
 	public Mono<?> update(@RequestBody(required = true) Account account) {
-				System.out.println(account.idClient+ " "+ account.idAccount);
+		
 		return service.findById(account.idAccount)//SI CLIENTE EXISTE
 				.flatMap(acc -> {
-					
-						if (acc.accountType.equals(account.accountType)) {
+						if (acc.getAccountType().getIdTypeAccount()==account.getAccountType().getIdTypeAccount()) {
 							
 							return service.update(account);
 							
 							} else {
 							return service.findByIdClientAndAccountType(account)
 									.flatMap(accc -> {
+										
 										return Mono.empty().switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST,"CUSTOMER WITH ID " + acc.idClient + " HAS A REGISTERED ACCOUNT OF THE SAME TYPE")));
 				}).switchIfEmpty(Mono.defer(() -> service.update(account)));
 			}

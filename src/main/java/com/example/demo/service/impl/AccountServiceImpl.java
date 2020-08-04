@@ -64,6 +64,12 @@ public class AccountServiceImpl implements AccountService {
 		return repo.findByIdClientAndAccountType(account.idClient,account.accountType);
 	}
 
+	@Override
+	public Mono<Account> findBbyAccountNumber(Account account) {
+		
+		return repo.findByAccountNumber(account.accountNumber);
+	}
+
 	
 	
 }

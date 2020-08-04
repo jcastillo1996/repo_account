@@ -18,4 +18,6 @@ public interface AccountRepo extends ReactiveMongoRepository<Account, Long> {
 	
 	Mono<Account> findByIdClientAndAccountType(List<Long> id,AccountType type);
 	
+	Mono<Account> findByAccountNumber(String accountNumber);
+	
 }

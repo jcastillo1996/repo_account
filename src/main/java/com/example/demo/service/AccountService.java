@@ -13,4 +13,6 @@ public interface AccountService extends ICRUD<Account, Long> {
 	
 	Mono<Account> findByIdClientAndAccountType(Account account);
 	
+	Mono<Account> findBbyAccountNumber(Account account);
+	
 }
