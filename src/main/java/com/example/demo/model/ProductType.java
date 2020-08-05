@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Document(collection = "type_account")
+@Document(collection = "product_type")
 @Data
 @Builder
 @NoArgsConstructor
@@ -21,8 +21,10 @@ import lombok.ToString;
 @EqualsAndHashCode
 @Getter
 @Setter
-public class AccountType {
+public class ProductType {
+
 	@Id
-	private Long idTypeAccount;
-	private String typeAccount;
+	private Long idType;
+	
+	private String typeName;
 }

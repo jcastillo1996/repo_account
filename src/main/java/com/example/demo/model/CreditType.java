@@ -1,28 +1,32 @@
 package com.example.demo.model;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Document(collection = "type_account")
+@Document(collection = "type_credit")
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
 @Getter
 @Setter
-public class AccountType {
+@ToString
+public class CreditType {
+
 	@Id
-	private Long idTypeAccount;
-	private String typeAccount;
+	@NotNull(message = "SHOULD NOT BE NULL")
+	private Long idType;
+	@NotNull(message = "SHOULD NOT BE NULL")
+	@NotEmpty(message = "ENTER TYPE NAME")
+	private String nameType;
+
 }

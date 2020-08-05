@@ -3,9 +3,6 @@ package com.example.demo.model;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,7 +14,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-@Document(collection = "accounts")
+
+@Document(collection = "products")
 @Data
 @Builder
 @NoArgsConstructor
@@ -26,18 +24,18 @@ import lombok.ToString;
 @EqualsAndHashCode
 @Getter
 @Setter
-public class Account {
+public class Product {
+
 	@Id
-	public Long idAccount;
-	@NotNull(message = "NO DEBE SER NULO")
-	@NotEmpty(message = "NO DEBE ESTAR VACIO")
-	public String accountNumber;
-	public String money;
-	public AccountType accountType;
-	public  LocalDate creationDate;
-	public Double mount;
-	public List<Long> idClient;
-	public List<Long> idSignatory;
-	
+	private Long idProduct;
+	private ProductType productType;
+	private String productNumber;
+	private String money;
+	private AccountType accountType;
+	private CreditType creditType;
+	private LocalDate creationDate;
+	private Double mount;
+	private List<Long> idClient;
+	private List<Long> idSignatory;
 
 }
