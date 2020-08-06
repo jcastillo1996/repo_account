@@ -15,7 +15,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.example.demo.model.Product;
 import com.example.demo.service.impl.ProductServiceImpl;
-import com.example.demo.webclient.ClientRestClient;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -27,9 +26,6 @@ public class ProductController {
 	@Autowired
 	ProductServiceImpl service;
 	
-	@Autowired
-	ClientRestClient webClient;
-
 	@GetMapping
 	public Flux<Product> findAll() {
 		return service.findAll();
@@ -48,7 +44,7 @@ public class ProductController {
 		
 		if (productType.equals("CUENTA")) {
 			product.setCreditType(null);
-			return webClient.getClientById(product.getIdClient().get(0)).flatMap(dto -> {
+			return service.getClientById(product.getIdClient().get(0)).flatMap(dto -> {
 				
 				if (dto.typeClient.typeName.equals("PERSONAL")) {// Cliente Personal
 					
@@ -86,7 +82,7 @@ public class ProductController {
 				if (prod.equals(product)) {
 					return service.update(product);
 				}
-				return webClient.getClientById(product.getIdClient().get(0)).flatMap(dto -> {
+				return service.getClientById(product.getIdClient().get(0)).flatMap(dto -> {
 					
 					if (dto.typeClient.typeName.equals("PERSONAL")) {// Cliente Personal
 						

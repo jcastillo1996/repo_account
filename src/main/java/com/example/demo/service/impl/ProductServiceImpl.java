@@ -5,10 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.model.AccountType;
 import com.example.demo.model.Product;
 import com.example.demo.repo.ProductRepo;
 import com.example.demo.service.ProductService;
+import com.example.demo.webclient.ClientRestClient;
+import com.example.demo.webclient.dto.ClientDTO;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -18,6 +19,8 @@ public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	ProductRepo repo;
+	@Autowired
+	ClientRestClient webClient;
 	
 	@Override
 	public Mono<Product> save(Product obj) {
@@ -66,5 +69,11 @@ public class ProductServiceImpl implements ProductService {
 		
 		return repo.findByIdClientAndAccountType(product.getIdClient(), product.getAccountType());
 	}
-
+	
+	/*
+	 * Para WebClient
+	 * */
+	public Mono<ClientDTO> getClientById(Long id){
+		return webClient.getClientById(id);
+	}
 }
