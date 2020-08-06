@@ -108,10 +108,18 @@ public class ProductController {
 		}
 		else {
 			return service.update(product);
-		}
-		
+		}	
 	}
-
+	@PutMapping("/updateMount")
+	public Mono<?> updateMount(@RequestBody Product prod){
+		
+		return service.findById(prod.getIdProduct())
+				.flatMap(product->{
+					
+					return Mono.just(product);
+				})
+				;
+	}
 	@DeleteMapping("/{id}")
 	public Mono<Void> deleteById(@PathVariable Long id) {
 
